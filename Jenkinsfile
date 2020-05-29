@@ -15,12 +15,9 @@ pipeline {
             }
             steps {
                 script {
-                    app = docker.build("lijinjayan/train-schedule")
-                    app.inside {
-                        sh '-v /var/run/docker.sock:/var/run/docker.sock'
-                        sh 'echo $(curl localhost:8080)'
-                    }
-                }
+                    docker.build("lijinjayan/train-schedule")
+                    docker.image("lijinjayan/train-schedule").inside('-v /var/run/docker.sock:/var/run/docker.sock')
+                         }
             }
         }
         stage('Push Docker Image') {
