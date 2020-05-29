@@ -7,7 +7,6 @@ pipeline {
                 sh './gradlew build --no-daemon'
                 archiveArtifacts artifacts: 'dist/trainSchedule.zip'
             }
-            
         }
         stage('Build Docker Image') {
             when {
@@ -15,9 +14,11 @@ pipeline {
             }
             steps {
                 script {
-                    docker.build("lijinjayan/train-schedule")
-                    docker.image("lijinjayan/train-schedule").inside('-v /var/run/docker.sock:/var/run/docker.sock')
-                         }
+                    app = docker.build("lijinjayan/train-schedule")
+                    app.inside {
+                        sh 'echo $(curl localhost:8080)'
+                    }
+                }
             }
         }
         stage('Push Docker Image') {
