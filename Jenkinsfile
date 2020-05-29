@@ -16,8 +16,8 @@ pipeline {
             steps {
                 script {
                     app = docker.build("lijinjayan/train-schedule")
-                    docker.image("lijinjayan/train-schedule").inside('-v /var/run/docker.sock:/var/run/docker.sock')
                     app.inside {
+                        sh '-v /var/run/docker.sock:/var/run/docker.sock'
                         sh 'echo $(curl localhost:8080)'
                     }
                 }
